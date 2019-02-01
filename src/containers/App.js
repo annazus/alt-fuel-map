@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { get_all_stations, get_stations_near_me } from "../api/altFuelStation";
+import { fetchStationsNearMe } from "../actions/altFuelStation";
 import GoogleMap from "../components/GoogleMap";
 
 import { getCurrentLocation } from "../utils";
@@ -35,11 +35,10 @@ class App extends Component {
       }
     });
 
-    get_stations_near_me(
-      process.env.REACT_APP_NREL_API_KEY,
+    fetchStationsNearMe(
       this.state.currentLocation.lat,
-      this.state.currentLocation.lng,
-      this.setMarkers
+      this.state.currentLocation.lng
+      // this.setMarkers
     );
 
     if (this.state.map) {
