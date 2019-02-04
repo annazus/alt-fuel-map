@@ -2,7 +2,7 @@ import * as types from "../constants/types";
 
 const INITIAL_STATE = {
   isFetching: false,
-  currentLocation: {}
+  currentLocation: { latitude: 0, longitude: 0 }
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -10,7 +10,11 @@ export default function(state = INITIAL_STATE, action) {
     case types.REQUEST_CURRENT_LOCATION:
       return { ...state, isFetching: true };
     case types.RECEIVE_CURRENT_LOCATION:
-      return { ...state, isFetching: false, currentLocation: action.payload };
+      return {
+        ...state,
+        isFetching: false,
+        currentLocation: action.payload
+      };
     default:
       return state;
   }

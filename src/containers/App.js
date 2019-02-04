@@ -3,51 +3,55 @@ import logo from "./logo.svg";
 import "./App.css";
 import { fetchStationsNearMe } from "../actions/altFuelStation";
 import GoogleMap from "../components/GoogleMap";
-
-import { getCurrentLocation } from "../utils";
+import { connect } from "react-redux";
+import { dispatch, bindActionCreators } from "redux";
+// import { getCurrentLocation } from "../utils";
+import * as currentLocationActions from "../actions/currentLocation";
+import currentLocationReducer from "../reducers/currentLocationReducer";
+import altFuelReducers from "../reducers/altFuelReducers";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentLocation: { lat: -25.344, lng: 131.036 },
+      // currentLocation: { lat: -25.344, lng: 131.036 },
       googleMaps: undefined,
       map: undefined
     };
   }
+
   onGoogleMapsLoaded = (googleMaps, map) => {
-    this.setState({ ...{ googleMaps: googleMaps, map: map } });
-
-    googleMaps.event.addListener(map, "click", event => {
-      this.addMarker(event.latLng, map);
-    });
+    // this.setState({ ...{ googleMaps: googleMaps, map: map } });
+    // googleMaps.event.addListener(map, "click", event => {
+    //   this.addMarker(event.latLng, map);
+    // });
   };
 
-  setCurrentLocation = position => {
-    console.log(position.coords.latitude);
-    this.setState({
-      ...{
-        currentLocation: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-      }
-    });
+  // setCurrentLocation = position => {
+  //   console.log(position.coords.latitude);
+  //   this.setState({
+  //     ...{
+  //       currentLocation: {
+  //         lat: position.coords.latitude,
+  //         lng: position.coords.longitude
+  //       }
+  //     }
+  //   });
 
-    fetchStationsNearMe(
-      this.state.currentLocation.lat,
-      this.state.currentLocation.lng
-      // this.setMarkers
-    );
+  //   fetchStationsNearMe(
+  //     this.state.currentLocation.lat,
+  //     this.state.currentLocation.lng
+  //     // this.setMarkers
+  //   );
 
-    if (this.state.map) {
-      this.state.map.setCenter({
-        lat: this.state.currentLocation.lat,
-        lng: this.state.currentLocation.lng
-      });
-    }
-  };
+  //   // if (this.state.map) {
+  //   //   this.state.map.setCenter({
+  //   //     lat: this.state.currentLocation.lat,
+  //   //     lng: this.state.currentLocation.lng
+  //   //   });
+  //   // }
+  // };
 
   setMarkers = markers => {
     console.log(markers.fuel_stations);
@@ -60,17 +64,9 @@ class App extends Component {
     });
   };
 
-  componentDidMount() {
-    getCurrentLocation(this.setCurrentLocation);
+  componentWillMount() {
+    this.props.locationActions.requestCurrentLocation();
   }
-  // Adds a marker to the map.
-  addMarker = (location, map) => {
-    // Add the marker at the clicked location
-    const marker = new this.state.googleMaps.Marker({
-      position: location,
-      map: this.state.map
-    });
-  };
 
   render() {
     return (
@@ -82,14 +78,15 @@ class App extends Component {
         <div className="App-container">
           <GoogleMap
             yourAPI_Key={process.env.REACT_APP_GOOGLE_MAP_API_KEY}
+            callback={this.onGoogleMapsLoaded}
             initialSetting={{
               zoom: 12,
               center: {
-                lat: this.state.currentLocation.lat,
-                lng: this.state.currentLocation.lng
+                lat: this.props.currentLocation.latitude,
+                lng: this.props.currentLocation.longitude
               }
+              // callback:{this.onGoogleMapsLoaded}
             }}
-            callback={this.onGoogleMapsLoaded}
           />
         </div>
       </div>
@@ -97,4 +94,22 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    isFetchingCurrentLocation: state.currentLocationReducer.isFetching,
+    currentLocation: state.currentLocationReducer.currentLocation,
+    isFetchingStations: state.altFuelReducers.longitude,
+    stations: state.altFuelReducers.stations
+  };
+}
+
+function bindDispatch(dispatch) {
+  return {
+    locationActions: bindActionCreators(currentLocationActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  bindDispatch
+)(App);
