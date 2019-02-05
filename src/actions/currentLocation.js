@@ -4,8 +4,10 @@ export const requestCurrentLocation = () => dispatch => {
   dispatch({
     type: types.REQUEST_CURRENT_LOCATION
   });
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
+      //   console.log("receive");
       dispatch(receiveCurrentLocation(position));
     });
   } else {
@@ -18,6 +20,13 @@ export const receiveCurrentLocation = position => dispatch => {
 
   return dispatch({
     type: types.RECEIVE_CURRENT_LOCATION,
-    payload: position.coords
+    payload: {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    }
   });
 };
+
+// export const clearWatch = () => {
+//   navigator.geolocation.clearWatch(watchId);
+// };

@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { fetchStationsNearMe } from "../actions/altFuelStation";
 import GoogleMap from "../components/GoogleMap";
 import { connect } from "react-redux";
-import { dispatch, bindActionCreators } from "redux";
-// import { getCurrentLocation } from "../utils";
+import { bindActionCreators } from "redux";
 import * as currentLocationActions from "../actions/currentLocation";
-import currentLocationReducer from "../reducers/currentLocationReducer";
-import altFuelReducers from "../reducers/altFuelReducers";
 
 class App extends Component {
   constructor(props) {
@@ -64,16 +60,26 @@ class App extends Component {
     });
   };
 
-  componentWillMount() {
+  componentDidMount() {
+    console.log("app componentDidMount");
+
     this.props.locationActions.requestCurrentLocation();
   }
 
+  componentWillUnmount() {
+    this.props.locationActions.clearWatch();
+  }
+
   render() {
+    console.log(this.props.currentLocation);
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>Display alternative fuel stations near me.</p>
+          <p>
+            Display alternative fuel stations near me.
+            {this.props.currentLocation.latitude}
+          </p>
         </header>
         <div className="App-container">
           <GoogleMap
@@ -98,7 +104,7 @@ function mapStateToProps(state) {
   return {
     isFetchingCurrentLocation: state.currentLocationReducer.isFetching,
     currentLocation: state.currentLocationReducer.currentLocation,
-    isFetchingStations: state.altFuelReducers.longitude,
+    isFetchingStations: state.altFuelReducers.isFetching,
     stations: state.altFuelReducers.stations
   };
 }

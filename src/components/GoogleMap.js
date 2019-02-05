@@ -4,6 +4,7 @@ import loadGoogleMaps from "../actions/googleMap";
 
 class GoogleMap extends Component {
   componentDidMount() {
+    console.log("google maps componentDidMount");
     loadGoogleMaps(this.props.yourAPI_Key, () => {
       var map = new window.google.maps.Map(
         document.getElementById("map"),
@@ -12,10 +13,15 @@ class GoogleMap extends Component {
       if (this.props.callback) this.props.callback(window.google.maps, map);
     });
   }
+
   render() {
     return (
-      <div id="map" style={{ width: "100%", height: "100%" }}>
-        {/* <span>{this.props.initialSetting.center.lat}</span> */}
+      <div
+        id="map"
+        style={{ width: "100%", height: "100%" }}
+        tag={this.props.initialSetting.center.lng}
+      >
+        {/* <div>"Lat is" + {this.props.initialSetting.center.lng}</div> */}
       </div>
     );
   }
