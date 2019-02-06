@@ -14,6 +14,9 @@ class GoogleMap extends Component {
     });
   }
 
+  componentDidUpdate() {
+
+  }
   render() {
     return (
       <div
