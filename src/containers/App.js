@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import GoogleMap from "../components/GoogleMap";
 import { connect } from "react-redux";
+import FilterBar from "../components/FilterBar";
 import { bindActionCreators } from "redux";
 import * as currentLocationActions from "../actions/currentLocation";
 import * as altFuelStationActions from "../actions/altFuelStation";
@@ -114,10 +115,14 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Display alternative fuel stations near me.
+            Locate alternative fueling stations
             {this.props.stations.length}
           </p>
         </header>
+        <FilterBar
+          handleLocationChange={val => alert(val)}
+          handleFuelChange={val => alert(val)}
+        />
         <div className="App-container">
           <GoogleMap
             yourAPI_Key={process.env.REACT_APP_GOOGLE_MAP_API_KEY}
