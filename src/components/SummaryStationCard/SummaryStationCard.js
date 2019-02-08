@@ -1,28 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
-import PropTypes from "prop-types";
-
+import "./SummaryStationCard.css";
 const SummaryStationCard = props => {
-  const { name, streetAddress, city, zip, state, level, distance } = props;
+  const {
+    station_name,
+    street_address,
+    city,
+    zip,
+    state,
+    level,
+    distance
+  } = props.station;
 
   return (
-    <div>
+    <div class="SummaryStationCard">
       <div>
-        <span>
-          {name}
-          {distance}
-        </span>
+        <span> {station_name}</span>
+        <span> {distance}</span>
       </div>
-      <div>{streetAddress}</div>
+      <div>{street_address}</div>
       <div>
         <span>
-          {city}","
-          {state}
+          {city},{state}
         </span>
       </div>
 
       <div>{zip}</div>
-      <div>{level}</div>
     </div>
   );
 };

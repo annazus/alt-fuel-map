@@ -1,0 +1,16 @@
+.SummaryStationCard {
+  background-color: #f3f4f3;
+  border-radius: 5px;
+  border: 1px solid #43493a;
+  color: #43493a;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 10px;
+  min-height: 10vh;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}

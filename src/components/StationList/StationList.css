@@ -1,0 +1,16 @@
+.StationList {
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  z-index: 1;
+  top: 22vh;
+  left: 0;
+  background-color: #2f4858;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}

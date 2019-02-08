@@ -7,7 +7,7 @@ import * as currentLocationActions from "../actions/currentLocation";
 import * as altFuelStationActions from "../actions/altFuelStation";
 import * as googleMapActions from "../actions/googleMapActions";
 import FilterBar from "../components/FilterBar";
-
+import StationList from "../components/StationList";
 import AppHeader from "../components/AppHeader";
 
 class App extends Component {
@@ -149,6 +149,11 @@ class App extends Component {
                 lng: this.props.currentLocation.longitude
               }
             }}
+          />
+          <StationList
+            stationList={
+              this.props.stationInfo ? this.props.stationInfo.fuel_stations : []
+            }
           />
         </div>
       </div>

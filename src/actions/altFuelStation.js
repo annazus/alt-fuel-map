@@ -18,7 +18,7 @@ export const createReqURL = reqParams =>
   NREL_API_GET_NEAREST_STATIONS +
   `api_key=${process.env.REACT_APP_NREL_API_KEY}&location=${
     reqParams.location
-  }&fuel_type=${reqParams.fuelType}`;
+  }&fuel_type=${reqParams.fuelType}&access=public`;
 // export function get_all_stations(api_key) {
 //   const allStationsUrl =
 //     NREL_API_ROOT_URL + NREL_API_GET_STATIONS + `api_key=${api_key}`;
