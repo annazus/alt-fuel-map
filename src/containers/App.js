@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import GoogleMap from "../components/GoogleMap";
 import { connect } from "react-redux";
-import FilterBar from "../components/FilterBar";
 import { bindActionCreators } from "redux";
 import * as currentLocationActions from "../actions/currentLocation";
 import * as altFuelStationActions from "../actions/altFuelStation";
 import * as googleMapActions from "../actions/googleMapActions";
+import FilterBar from "../components/FilterBar";
+
+import AppHeader from "../components/AppHeader";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,12 @@ class App extends Component {
       map: undefined
     };
     this.currentInfoWindow = undefined;
+    this.markers = [];
+
+    this.state = {
+      location: "current",
+      fuelType: "all"
+    };
   }
 
   onGoogleMapsLoaded = (googleMaps, map) => {
@@ -25,48 +33,29 @@ class App extends Component {
     console.log(map);
     this.props.googleMapAction.storeGMapInfo(googleMaps, map);
   };
-  // this.setState({ ...{ googleMaps: googleMaps, map: map } });
-  // googleMaps.event.addListener(map, "click", event => {
-  //   this.addMarker(event.latLng, map);
-  // });
-  // };
-
-  // setCurrentLocation = position => {
-  //   console.log(position.coords.latitude);
-  //   this.setState({
-  //     ...{
-  //       currentLocation: {
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude
-  //       }
-  //     }
-  //   });
-
-  //   fetchStationsNearMe(
-  //     this.state.currentLocation.lat,
-  //     this.state.currentLocation.lng
-  //     // this.setMarkers
-  //   );
-
-  //   // if (this.state.map) {
-  //   //   this.state.map.setCenter({
-  //   //     lat: this.state.currentLocation.lat,
-  //   //     lng: this.state.currentLocation.lng
-  //   //   });
-  //   // }
-  // };
 
   setMarkers = stations => {
     console.log(stations);
+    if (stations.length === 0) return;
+    for (var i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(null);
+    }
+    this.markers = [];
 
-    stations.map(item => {
-      var marker = new this.props.gMapInfo.gMapApi.Marker({
+    let bounds = new this.props.gMapInfo.gMapApi.LatLngBounds();
+
+    stations.map((item, key) => {
+      const marker = new this.props.gMapInfo.gMapApi.Marker({
         position: { lat: item.latitude, lng: item.longitude },
-        label: item.station_name,
+        label: key + "",
         map: this.props.gMapInfo.gMapHandle
       });
       marker.addListener("click", () => this.onMarkerClick(item, marker));
+      this.markers.push(marker);
+      bounds.extend({ lat: item.latitude, lng: item.longitude });
+      this.props.gMapInfo.gMapHandle.fitBounds(bounds);
     });
+    // this.setState({ ...this.state }, { marker: markerArr });
   };
 
   onMarkerClick = (station, marker) => {
@@ -98,8 +87,20 @@ class App extends Component {
   componentDidUpdate() {
     console.log("App component did update");
     console.log(this.props);
-    if (this.props.gMapInfo && this.props.stations.length > 0) {
-      this.setMarkers(this.props.stations);
+
+    if (this.props.gMapInfo && this.props.stationInfo) {
+      this.props.gMapInfo.gMapHandle.setCenter({
+        lat: this.props.stationInfo.latitude,
+        lng: this.props.stationInfo.longitude
+      });
+      this.setMarkers(this.props.stationInfo.fuel_stations);
+      return;
+    }
+    if (this.props.gMapInfo.gMapHandle && this.props.currentLocation) {
+      this.props.gMapInfo.gMapHandle.panTo({
+        lat: this.props.currentLocation.latitude,
+        lng: this.props.currentLocation.longitude
+      });
     }
   }
   currentLocationCallback(lat, lng) {
@@ -107,21 +108,34 @@ class App extends Component {
     this.props.altFuelStationActions.fetchStationsNearMe(lat, lng);
   }
 
+  requestStations(location, fuelType) {
+    this.props.altFuelStationActions.fetchStations({
+      location: location,
+      fuelType: fuelType
+    });
+  }
+
   componentWillUnmount() {}
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Locate alternative fueling stations
-            {this.props.stations.length}
-          </p>
-        </header>
+        <AppHeader />
         <FilterBar
-          handleLocationChange={val => alert(val)}
-          handleFuelChange={val => alert(val)}
+          handleLocationChange={val => {
+            this.setState({
+              location: val,
+              fuelType: this.state.fuelType
+            });
+            this.requestStations(val, this.state.fuelType);
+          }}
+          handleFuelChange={val => {
+            this.setState({
+              location: this.state.location,
+              fuelType: val
+            });
+            this.requestStations(this.state.location, val);
+          }}
         />
         <div className="App-container">
           <GoogleMap
@@ -149,7 +163,7 @@ function mapStateToProps(state) {
     isFetchingCurrentLocation: state.currentLocationReducer.isFetching,
     currentLocation: state.currentLocationReducer.currentLocation,
     isFetchingStations: state.altFuelReducers.isFetching,
-    stations: state.altFuelReducers.fuelStations,
+    stationInfo: state.altFuelReducers.fuelStationInfo,
     gMapInfo: {
       gMapApi: state.gMapReducer.gMapApi,
       gMapHandle: state.gMapReducer.currentMapHandle

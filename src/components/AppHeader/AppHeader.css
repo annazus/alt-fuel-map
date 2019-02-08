@@ -1,0 +1,49 @@
+.AppHeader {
+  background-color: #007194;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: calc(10px + 2vmin);
+  /* color: #43493a; */
+  color: #8bc340;
+}
+
+.AppHeader .Logo {
+  height: 15vh;
+  margin-left: 10px;
+}
+
+.AppHeader h1 {
+  font-size: calc(10px + 2vmin);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.Forest-green {
+  color: #1e823f;
+}
+.Beige {
+  color: #daefc4;
+}
+.Yellow-green {
+  color: #8bc340;
+}
+
+.White-smoke {
+  color: #f3f4f3;
+}
+
+.Dark-sea-green {
+  color: #97c194;
+}
+.a {
+  color: #8bc340;
+  color: #43493a;
+  color: #a7ae9c;
+  color: #00d0f7;
+  color: #0098bf;
+}

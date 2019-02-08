@@ -10,7 +10,7 @@ export default function(state = INITIAL_STATE, action) {
     case types.REQUEST_NEARBY_STATIONS:
       return { ...state, isFetching: true };
     case types.RECEIVE_NEARBY_STATIONS:
-      return { ...state, isFetching: false, fuelStations: action.payload };
+      return { ...state, isFetching: false, fuelStationInfo: action.payload };
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
+import "./Location.css";
 class Location extends Component {
   constructor(props) {
     super(props);
@@ -13,18 +13,20 @@ class Location extends Component {
   render() {
     const { placeholder, handleLocationChange } = this.props;
     return (
-      <span>
+      <span class="Location">
         <input
           type="text"
           placeholder={placeholder}
           onBlur={this.onLocationChange}
+          className="TextInput"
         />
         <button
           onClick={() => {
             handleLocationChange(this.state.currentLocation);
           }}
+          className="LocationSearch"
         >
-          <i class="material-icons">search</i>
+          <i class="material-icons SearchIcon">search</i>
         </button>
       </span>
     );

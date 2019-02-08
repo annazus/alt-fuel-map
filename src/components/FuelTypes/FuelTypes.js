@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import "./FuelTypes.css";
 const FuelTypes = props => {
   const { selectedFuelType, handleFuelChange } = props;
   const fuel_types = [
@@ -8,15 +8,17 @@ const FuelTypes = props => {
     { code: "BD", description: "Biodiesel (B20 and above)" },
     { code: "CNG", description: "Compressed Natural Gas" },
     { code: "E85", description: "Ethanol (E85)" },
+    { code: "ELEC", description: "Electric" },
     { code: "HY", description: "Hydrogen" },
     { code: "LNG", description: "Liquified Natural Gas" },
     { code: "LPG", description: "Liquified Petroleum Gas (Propane)" }
   ];
 
   return (
-    <div>
+    <div class="FuelTypes">
       <select
-        value={selectedFuelType}
+        className="FuelTypesSelect"
+        // value={selectedFuelType}
         onChange={e => handleFuelChange(e.target.value)}
       >
         {fuel_types.map((item, key) => (

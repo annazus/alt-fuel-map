@@ -1,0 +1,10 @@
+.FilterBar {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  width: 100vw;
+  height: 5vh;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #2f4858;
+}

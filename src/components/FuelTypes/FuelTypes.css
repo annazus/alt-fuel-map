@@ -1,0 +1,20 @@
+.FuelTypes {
+  margin-left: 20px;
+
+  padding: 5px;
+  width: 20vw;
+
+  box-sizing: border-box;
+}
+.FuelTypesSelect {
+  font-size: calc(10px + 1vmin);
+  padding: 2px;
+
+  width: 350px;
+  height: 30px;
+  border: 1px solid #43493a;
+  color: #43493a;
+  border-radius: 5px;
+  background-color: #f3f4f3;
+  box-sizing: border-box;
+}

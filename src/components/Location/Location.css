@@ -1,0 +1,36 @@
+.Location {
+  padding: 5px;
+  width: 20vw;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin-left: 20px;
+}
+
+.Location .TextInput {
+  font-size: calc(10px + 1vmin);
+  width: 300px;
+  height: 30px;
+  padding: 2px;
+  border: 1px solid #43493a;
+  color: #43493a;
+  border-radius: 5px;
+  background-color: #f3f4f3;
+  box-sizing: border-box;
+}
+
+.Location .LocationSearch {
+  box-sizing: border-box;
+  padding: 2px;
+  margin-left: 5px;
+  width: 30px;
+  height: 30px;
+  background-color: #f3f4f3;
+  color: #43493a;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #43493a;
+}
